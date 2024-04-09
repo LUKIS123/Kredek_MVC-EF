@@ -1,0 +1,21 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Szczegóły: " + Model.Name;   
+}
+
+<div id="main">
+    <h4>Informacje o produkcie</h4>
+    <p>Nazwa:</p>
+    <p> @Model.Name</p>
+    <p>Opis: </p>
+    <p>@Model.Description</p>
+    <p>Cena:</p>
+    <p>@Model.Price</p>
+    <p>Kategoria:</p>
+    <p>@Model.Category</p>
+    <img src="~/images/@Model.ImageUrl" style="height: 15rem; width: 15rem; text-align: center" class="rounded" />
+</div>
+
+
+
