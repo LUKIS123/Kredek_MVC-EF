@@ -49,7 +49,7 @@ namespace JakubWiesniakLab3.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProduct([Bind("Name,Category,Price,Description,ImageUrl")] Product product)
+        public IActionResult AddProduct([Bind("Name,Category,Price,Description,ImageUrl")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {

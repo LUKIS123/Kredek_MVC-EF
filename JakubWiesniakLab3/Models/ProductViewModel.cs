@@ -2,14 +2,13 @@
 
 namespace JakubWiesniakLab3.Models
 {
-    public class Product
+    public class ProductViewModel
     {
-        public Product()
+        public ProductViewModel()
         {
-
         }
 
-        public Product (int id, string name, string category, double price, string description, string imageurl)
+        public ProductViewModel(int id, string name, string category, double price, string description, string imageurl)
         {
             Id = id;
             Name = name;
@@ -18,7 +17,7 @@ namespace JakubWiesniakLab3.Models
             Description = description;
             ImageUrl = imageurl;
         }
-       
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Nazwa jest wymagana")]

@@ -4,10 +4,14 @@ namespace JakubWiesniakLab3.Repositories
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> GetAll();
+        IEnumerable<ProductViewModel> GetAll();
 
-        Product Get(int id);
+        ProductViewModel? Get(int id);
 
-        void Add(Product product);
+        void Add(ProductViewModel product);
+
+        ProductViewModel? Update(ProductViewModel product);
+
+        void Delete(int id);
     }
 }
