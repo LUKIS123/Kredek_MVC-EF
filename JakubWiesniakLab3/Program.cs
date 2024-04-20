@@ -1,7 +1,11 @@
 using JakubWiesniakLab3;
 using JakubWiesniakLab3.DataAccess;
-using JakubWiesniakLab3.Repositories;
+using JakubWiesniakLab3.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using JakubWiesniakLab3.Repositories.Orders;
+using JakubWiesniakLab3.Repositories.Products;
+using JakubWiesniakLab3.Repositories.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +18,16 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     );
 });
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<DbSeeder>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 var app = builder.Build();
 

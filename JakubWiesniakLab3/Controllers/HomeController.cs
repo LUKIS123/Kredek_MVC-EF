@@ -1,7 +1,7 @@
 using JakubWiesniakLab3.Models;
-using JakubWiesniakLab3.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using JakubWiesniakLab3.Repositories.Products;
 
 namespace JakubWiesniakLab3.Controllers
 {
@@ -18,6 +18,8 @@ namespace JakubWiesniakLab3.Controllers
 
         public IActionResult Index()
         {
+            var usernameCookieValue = HttpContext.Request.Cookies["username"];
+            ViewData["Username"] = usernameCookieValue;
             return View();
         }
 
@@ -49,7 +51,7 @@ namespace JakubWiesniakLab3.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProduct([Bind("Name,Category,Price,Description,ImageUrl")] ProductViewModel product)
+        public IActionResult AddProduct([Bind("ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +62,28 @@ namespace JakubWiesniakLab3.Controllers
             return View(product);
         }
 
+        public IActionResult EditProduct(int id)
+        {
+            return View(_productrepository.Get(id));
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct([Bind("Id,ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
+        {
+            if (ModelState.IsValid)
+            {
+                _productrepository.Update(product);
+                return RedirectToAction("AllProducts", _productrepository.GetAll());
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(int id)
+        {
+            _productrepository.Delete(id);
+            return RedirectToAction("AllProducts", _productrepository.GetAll());
+        }
     }
 }
-

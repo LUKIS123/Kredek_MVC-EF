@@ -1,2 +1,8 @@
 ﻿<h1>Sklep</h1>
 <p>Strona zrobiona przez JW</p>
+
+
+@if (ViewData["Username"] is not null)
+{
+    <p>Witaj @ViewData["Username"]</p>
+}

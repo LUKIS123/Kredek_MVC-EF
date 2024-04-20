@@ -1,7 +1,7 @@
 ﻿@model ProductViewModel
 
 @{
-    ViewData["Title"] = "Szczegóły: " + Model.Name;   
+    ViewData["Title"] = "Szczegóły: " + Model.Name;
 }
 
 <div id="main">
@@ -14,8 +14,13 @@
     <p>@Model.Price</p>
     <p>Kategoria:</p>
     <p>@Model.Category</p>
-    <img src="~/images/@Model.ImageUrl" style="height: 15rem; width: 15rem; text-align: center" class="rounded" />
+    <img src="~/images/@Model.ImageUrl" style="height: 15rem; width: 15rem; text-align: center" class="rounded"/>
+
+    <br/>
+    @Html.ActionLink("Edytuj", "EditProduct", "Home", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
+    <form asp-action="DeleteProduct" asp-controller="Home" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Jesteś pewny?');">Usuń</button>
+    </form>
+
 </div>
-
-
-

@@ -1,6 +1,6 @@
 ﻿using JakubWiesniakLab3.Models;
 
-namespace JakubWiesniakLab3.Repositories
+namespace JakubWiesniakLab3.Repositories.Products
 {
     public interface IProductRepository
     {
@@ -10,7 +10,7 @@ namespace JakubWiesniakLab3.Repositories
 
         void Add(ProductViewModel product);
 
-        ProductViewModel? Update(ProductViewModel product);
+        bool Update(ProductViewModel product);
 
         void Delete(int id);
     }

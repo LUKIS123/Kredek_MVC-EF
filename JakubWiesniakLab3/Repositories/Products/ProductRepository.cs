@@ -1,8 +1,7 @@
 ﻿using JakubWiesniakLab3.DataAccess;
-using JakubWiesniakLab3.DataAccess.Entities;
 using JakubWiesniakLab3.Models;
 
-namespace JakubWiesniakLab3.Repositories;
+namespace JakubWiesniakLab3.Repositories.Products;
 
 public class ProductRepository : IProductRepository
 {
@@ -46,7 +45,7 @@ public class ProductRepository : IProductRepository
 
     public void Add(ProductViewModel product)
     {
-        _context.Products.Add(new Product
+        _context.Products.Add(new DataAccess.Entities.Product
         {
             Name = product.Name,
             Description = product.Description,
@@ -57,13 +56,35 @@ public class ProductRepository : IProductRepository
         _context.SaveChanges();
     }
 
-    public ProductViewModel? Update(ProductViewModel product)
+    public bool Update(ProductViewModel product)
     {
-        throw new NotImplementedException();
+        var productToUpdate = _context.Products
+            .FirstOrDefault(x => x.Id == product.Id);
+
+        if (productToUpdate is null)
+        {
+            return false;
+        }
+
+        productToUpdate.Name = product.Name;
+        productToUpdate.Description = product.Description;
+        productToUpdate.Category = product.Category;
+        productToUpdate.Price = product.Price;
+        productToUpdate.ImageUrl = product.ImageUrl;
+
+        _context.SaveChanges();
+        return true;
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var productToDelete = _context.Products
+            .FirstOrDefault(x => x.Id == id);
+
+        if (productToDelete is not null)
+        {
+            _context.Products.Remove(productToDelete);
+            _context.SaveChanges();
+        }
     }
 }

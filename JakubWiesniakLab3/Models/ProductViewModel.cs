@@ -30,6 +30,7 @@ namespace JakubWiesniakLab3.Models
 
         [Required(ErrorMessage = "Cena jest wymagana")]
         [Display(Name = "Cena")]
+        [Range(0, double.MaxValue)]
         public double Price { get; set; }
 
         [Required(ErrorMessage = "Opis jest wymagany")]

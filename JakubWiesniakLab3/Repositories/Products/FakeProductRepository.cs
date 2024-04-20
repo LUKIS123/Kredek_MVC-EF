@@ -1,6 +1,6 @@
 ﻿using JakubWiesniakLab3.Models;
 
-namespace JakubWiesniakLab3.Repositories
+namespace JakubWiesniakLab3.Repositories.Products
 {
     public class FakeProductRepository : IProductRepository
     {
@@ -28,7 +28,7 @@ namespace JakubWiesniakLab3.Repositories
             Products.Add(product);
         }
 
-        public ProductViewModel? Update(ProductViewModel product)
+        public bool Update(ProductViewModel product)
         {
             throw new NotImplementedException();
         }

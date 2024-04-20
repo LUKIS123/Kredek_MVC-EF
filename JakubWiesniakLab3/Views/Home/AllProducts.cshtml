@@ -8,25 +8,27 @@
 <div id="main">
     <table style="text-align: center">
         <thead>
-            <tr>
-                <th>Nazwa</th>
-                <th>Kategoria</th>
-                <th>Cena</th>
-                <th></th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>Nazwa</th>
+            <th>Kategoria</th>
+            <th>Cena</th>
+            <th></th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @foreach(var a in Model)
-            {
-                <tr>
-                    <td>@a.Name</td>
-                    <td>@a.Category</td>
-                    <td>@a.Price</td>
-                    <td><img src="~/images/@a.ImageUrl" style="height: 12rem; width: 9rem" class="rounded" /> </td>
-                    <td>@Html.ActionLink("Szczegóły", "ProductDetails", new {id = @a.Id}) </td>
-                </tr>   
-            }
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.Name</td>
+                <td>@a.Category</td>
+                <td>@a.Price</td>
+                <td>
+                    <img src="~/images/@a.ImageUrl" style="height: 12rem; width: 9rem" class="rounded"/>
+                </td>
+                <td>@Html.ActionLink("Szczegóły", "ProductDetails", new { id = @a.Id }) </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>

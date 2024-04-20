@@ -1,6 +1,6 @@
 ﻿@model ProductViewModel
 
-@using (Html.BeginForm("AddProduct", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("EditProduct", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
@@ -33,5 +33,5 @@
     </div>
 
 
-    <button type="submit" class="btn btn-outline-primary my-2">Dodaj produkt</button>
+    <button type="submit" class="btn btn-outline-primary my-2">Edytuj Produkt</button>
 }
