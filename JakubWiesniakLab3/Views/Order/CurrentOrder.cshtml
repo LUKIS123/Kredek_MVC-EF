@@ -22,13 +22,14 @@
                 <td>
                 <td>
                     <form method="post" asp-controller="Order" asp-action="AddItem">
-                        <input type="hidden" name="itemId" value="@item.Id"/>
+                        <input type="hidden" name="itemId" value="@item.ProductId"/>
+                        <input type="hidden" name="quantity" value="@(item.Quantity + 1)"/>
                         <button type="submit" class="btn btn-outline-primary mx-2">+</button>
                     </form>
                 </td>
                 <td>
                     <form method="post" asp-controller="Order" asp-action="DeleteItem">
-                        <input type="hidden" name="itemId" value="@item.Id"/>
+                        <input type="hidden" name="itemId" value="@item.ProductId"/>
                         <button type="submit" class="btn btn-outline-primary mx-2">-</button>
                     </form>
                 </td>
@@ -37,9 +38,14 @@
         </tbody>
 
     </table>
-    @Html.ActionLink("Zamów", "FinalizeOrder", "Order", new { OrderId = Model.Id }, new { @class = "btn btn-primary" })
+
+    @using (Html.BeginForm("FinalizeOrder", "Order", FormMethod.Post, new { @class = "inline-form" }))
+    {
+        @Html.Hidden("OrderId", Model.Id)
+        <button type="submit" class="btn btn-primary">Zamów</button>
+    }
 }
 else
 {
-    <h5>Brak książek w koszyku</h5>
+    <h5>Koszyk pusty</h5>
 }

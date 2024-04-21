@@ -34,6 +34,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
                         Id = oi.Id,
                         OrderId = oi.OrderId,
                         Quantity = oi.Quantity,
+                        ProductId = oi.ProductId,
                         Name = oi.Product.Name,
                         Category = oi.Product.Category,
                         Price = oi.Product.Price * oi.Quantity,
@@ -70,6 +71,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
                     Id = oi.Id,
                     OrderId = oi.OrderId,
                     Quantity = oi.Quantity,
+                    ProductId = oi.ProductId,
                     Name = oi.Product.Name,
                     Category = oi.Product.Category,
                     Price = oi.Product.Price * oi.Quantity,
@@ -106,15 +108,41 @@ namespace JakubWiesniakLab3.Repositories.Orders
 
         public void AddOrderItem(Guid orderId, int productId, int quantity)
         {
-            var orderItem = new OrderItem
+            var itemByProductId = _context.OrderItems
+                .FirstOrDefault(x => x.OrderId == orderId && x.ProductId == productId);
+            if (itemByProductId is not null)
             {
-                OrderId = orderId,
-                ProductId = productId,
-                Quantity = quantity,
-            };
+                itemByProductId.Quantity = quantity;
+            }
+            else
+            {
+                var orderItem = new OrderItem
+                {
+                    OrderId = orderId,
+                    ProductId = productId,
+                    Quantity = quantity,
+                };
 
-            _context.OrderItems.Add(orderItem);
+                _context.OrderItems.Add(orderItem);
+            }
+
             _context.SaveChanges();
+        }
+
+        public void RemoveOrderItem(Guid orderId, int productId)
+        {
+            var itemByProductId = _context.OrderItems
+                .FirstOrDefault(x => x.OrderId == orderId && x.ProductId == productId);
+            if (itemByProductId is not null)
+            {
+                itemByProductId.Quantity -= 1;
+                if (itemByProductId.Quantity == 0)
+                {
+                    _context.OrderItems.Remove(itemByProductId);
+                }
+
+                _context.SaveChanges();
+            }
         }
 
         public void FinalizeOrder(Guid id)

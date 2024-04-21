@@ -51,7 +51,8 @@ namespace JakubWiesniakLab3.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProduct([Bind("ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
+        public IActionResult AddProduct(
+            [Bind("ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +69,8 @@ namespace JakubWiesniakLab3.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditProduct([Bind("Id,ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
+        public IActionResult EditProduct(
+            [Bind("Id,ProductName,ProductCategrory,Price,Description,ImageUrl")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {

@@ -23,19 +23,13 @@ namespace JakubWiesniakLab3.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var usernameCookieValue = HttpContext.Request.Cookies["username"];
-            if (usernameCookieValue is null)
+            var userId = GetUserId();
+            if (userId is null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var user = _accountRepository.GetUser(usernameCookieValue);
-            if (user is null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var orders = _orderRepository.GetOrdersByUser(user.Id);
+            var orders = _orderRepository.GetOrdersByUser(userId.Value);
             return View(orders);
         }
 
@@ -50,19 +44,13 @@ namespace JakubWiesniakLab3.Controllers
             [Bind("Phone, City, Address, ProductId")]
             BeginOrderViewModel beginOrderViewModel)
         {
-            var usernameCookieValue = HttpContext.Request.Cookies["username"];
-            if (usernameCookieValue is null)
+            var userId = GetUserId();
+            if (userId is null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var user = _accountRepository.GetUser(usernameCookieValue);
-            if (user is null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var orderId = _orderRepository.BeginOrder(beginOrderViewModel, user.Id);
+            var orderId = _orderRepository.BeginOrder(beginOrderViewModel, userId.Value);
             _orderRepository.AddOrderItem(orderId, beginOrderViewModel.ProductId, 1);
 
             return RedirectToAction("CurrentOrder");
@@ -71,24 +59,18 @@ namespace JakubWiesniakLab3.Controllers
         [HttpGet]
         public IActionResult CurrentOrder()
         {
-            var usernameCookieValue = HttpContext.Request.Cookies["username"];
-            if (usernameCookieValue is null)
+            var userId = GetUserId();
+            if (userId is null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var user = _accountRepository.GetUser(usernameCookieValue);
-            if (user is null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var cart = _orderRepository.GetByStatus(1, user.Id);
-            return View(cart);
+            var cart = _orderRepository.GetByStatus(1, userId.Value);
+            return View(cart ?? new OrderViewModel());
         }
 
         [HttpPost]
-        public IActionResult AddItem(int itemId)
+        public IActionResult AddItem(int itemId, int quantity)
         {
             var product = _productRepository.Get(itemId);
             if (product is null)
@@ -96,55 +78,70 @@ namespace JakubWiesniakLab3.Controllers
                 return BadRequest();
             }
 
-            var usernameCookieValue = HttpContext.Request.Cookies["username"];
-            if (usernameCookieValue is null)
+            var userId = GetUserId();
+            if (userId is null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var user = _accountRepository.GetUser(usernameCookieValue);
-            if (user is null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var order = _orderRepository.GetByStatus(1, user.Id);
+            var order = _orderRepository.GetByStatus(1, userId.Value);
             if (order is null)
             {
                 return RedirectToAction("CreateOrder", new { productId = itemId });
             }
 
-            _orderRepository.AddOrderItem(order.Id, product.Id, 1);
+            _orderRepository.AddOrderItem(order.Id, product.Id, quantity);
             return RedirectToAction("CurrentOrder");
         }
 
         [HttpPost]
-        public IActionResult DeleteItem(Guid orderId)
+        public IActionResult DeleteItem(int itemId)
         {
-            throw new NotImplementedException();
+            var product = _productRepository.Get(itemId);
+            if (product is null)
+            {
+                return BadRequest();
+            }
+
+            var userId = GetUserId();
+            if (userId is null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var order = _orderRepository.GetByStatus(1, userId.Value);
+            if (order is null)
+            {
+                return RedirectToAction("CreateOrder", new { productId = itemId });
+            }
+
+            _orderRepository.RemoveOrderItem(order.Id, product.Id);
+            return RedirectToAction("CurrentOrder");
         }
 
         [HttpPost]
         public IActionResult FinalizeOrder(Guid orderId)
         {
-            throw new NotImplementedException();
+            var userId = GetUserId();
+            if (userId is null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            _orderRepository.FinalizeOrder(orderId);
+            return RedirectToAction("Index");
         }
 
-        private Guid GetUserId()
+        private Guid? GetUserId()
         {
             var usernameCookieValue = HttpContext.Request.Cookies["username"];
             if (usernameCookieValue is null)
             {
-                return Guid.Empty;
+                return null;
             }
 
             var user = _accountRepository.GetUser(usernameCookieValue);
-            if (user is null)
-            {
-                return Guid.Empty;
-            }
-
-            return user.Id;
+            return user?.Id;
         }
     }
 }

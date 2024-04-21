@@ -8,8 +8,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
         OrderViewModel? GetByStatus(int statusId, Guid userId);
         Guid BeginOrder(BeginOrderViewModel dto, Guid userId);
         void AddOrderItem(Guid orderId, int productId, int quantity);
-        void IncreaseQuantity(Guid orderItemId);
-        void DecreaseQuantity(Guid orderItemId);
+        void RemoveOrderItem(Guid orderId, int productId);
         void FinalizeOrder(Guid id);
         void DeleteOrder(Guid id);
     }
