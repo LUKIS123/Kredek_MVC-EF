@@ -6,8 +6,10 @@ namespace JakubWiesniakLab3.Repositories.Orders
     {
         IEnumerable<OrderViewModel> GetOrdersByUser(Guid userId);
         OrderViewModel? GetByStatus(int statusId, Guid userId);
-        Guid BeginOrder(string phone, string city, string address, Guid userId);
+        Guid BeginOrder(BeginOrderViewModel dto, Guid userId);
         void AddOrderItem(Guid orderId, int productId, int quantity);
+        void IncreaseQuantity(Guid orderItemId);
+        void DecreaseQuantity(Guid orderItemId);
         void FinalizeOrder(Guid id);
         void DeleteOrder(Guid id);
     }

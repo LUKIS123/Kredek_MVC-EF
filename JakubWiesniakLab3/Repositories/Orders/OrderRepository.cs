@@ -20,7 +20,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
                 .Include(x => x.OrderStatus)
                 .Include(x => x.OrderItems)!
                 .ThenInclude(x => x.Product)
-                .Where(o => o.UserId == userId)
+                .Where(o => o.UserId == userId && o.OrderStatusId == 2)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
@@ -79,7 +79,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
             };
         }
 
-        public Guid BeginOrder(string phone, string city, string address, Guid userId)
+        public Guid BeginOrder(BeginOrderViewModel dto, Guid userId)
         {
             var currentOrder = _context.Orders
                 .FirstOrDefault(x => (x.OrderStatusId == 1 && x.UserId == userId));
@@ -90,12 +90,12 @@ namespace JakubWiesniakLab3.Repositories.Orders
 
             var order = new Order
             {
-                Phone = phone,
-                City = city,
-                Address = address,
+                Phone = dto.Phone,
+                City = dto.City,
+                Address = dto.Address,
                 UserId = userId,
                 OrderStatusId = 1,
-                Date = DateTime.Now
+                Date = DateTime.Now,
             };
 
             _context.Orders.Add(order);
@@ -110,7 +110,7 @@ namespace JakubWiesniakLab3.Repositories.Orders
             {
                 OrderId = orderId,
                 ProductId = productId,
-                Quantity = quantity
+                Quantity = quantity,
             };
 
             _context.OrderItems.Add(orderItem);
@@ -119,34 +119,20 @@ namespace JakubWiesniakLab3.Repositories.Orders
 
         public void FinalizeOrder(Guid id)
         {
-            var order = _context.Orders
+            _context.Orders
                 .Include(x => x.OrderItems)
-                .FirstOrDefault(x => x.Id == id);
+                .Where(x => x.Id == id && x.OrderItems.Any())
+                .ExecuteUpdate(x => x.SetProperty(o => o.OrderStatusId, 2));
 
-            // todo: check if order is not null and if it has any items
-            if (order is null || (order.OrderItems is null || order.OrderItems.Count == 0))
-            {
-                return;
-            }
-
-            order.OrderStatusId = 2;
             _context.SaveChanges();
         }
 
         public void DeleteOrder(Guid id)
         {
-            var order = _context.Orders
-                .FirstOrDefault(x => x.Id == id);
+            _context.Orders
+                .Where(x => x.Id == id)
+                .ExecuteDelete();
 
-            if (order is null)
-            {
-                return;
-            }
-
-            // gdyby nie bylo delete.cascade
-            // _context.OrderItems.RemoveRange(order.OrderItems);
-
-            _context.Orders.Remove(order);
             _context.SaveChanges();
         }
     }

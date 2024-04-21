@@ -9,6 +9,6 @@
         public required string Description { get; set; }
         public required string ImageUrl { get; set; }
 
-        public virtual List<OrderItem>? OrderItems { get; set; }
+        public virtual List<OrderItem> OrderItems { get; set; } = [];
     }
 }

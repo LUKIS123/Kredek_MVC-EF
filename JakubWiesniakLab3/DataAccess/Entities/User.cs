@@ -9,6 +9,6 @@
         public required string LastName { get; set; }
         public required string PasswordHash { get; set; }
 
-        public virtual List<Order>? Orders { get; set; }
+        public virtual List<Order> Orders { get; set; } = [];
     }
 }

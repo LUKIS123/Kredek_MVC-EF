@@ -1,0 +1,31 @@
+﻿@model BeginOrderViewModel
+
+@{
+    var id = ViewContext.RouteData.Values["productId"]?.ToString();
+    ViewData["Title"] = "Tworzenie Zamówienia";
+}
+
+@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.ProductId)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone)
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Phone, null, new { @class = "" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.City)
+        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.City, null, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address)
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Address, null, new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary my-2">Zamów</button>
+}

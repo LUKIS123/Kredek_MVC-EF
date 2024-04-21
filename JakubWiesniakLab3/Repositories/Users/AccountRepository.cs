@@ -34,7 +34,7 @@ public class AccountRepository : IAccountRepository
         _context.SaveChanges();
     }
 
-    public User? GetUser(LoginViewModel dto)
+    public User? LoginUser(LoginViewModel dto)
     {
         var user = _context.Users
             .FirstOrDefault(u => u.UserName == dto.UserName);
@@ -51,5 +51,11 @@ public class AccountRepository : IAccountRepository
         }
 
         return user;
+    }
+
+    public User? GetUser(string username)
+    {
+        return _context.Users
+            .FirstOrDefault(u => u.UserName == username);
     }
 }

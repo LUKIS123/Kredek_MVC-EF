@@ -1,0 +1,45 @@
+﻿@model OrderViewModel
+
+<h1>Koszyk</h1>
+@Html.ActionLink("Powrót", "AllProducts", "Home", null, new { @class = "btn btn-secondary" })
+@if (Model.OrderItems.Any())
+{
+    <table>
+        <thead>
+        <th>Nazwa</th>
+        <th>Cena</th>
+        <th>Ilość</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>
+                <td>
+                    <form method="post" asp-controller="Order" asp-action="AddItem">
+                        <input type="hidden" name="itemId" value="@item.Id"/>
+                        <button type="submit" class="btn btn-outline-primary mx-2">+</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-controller="Order" asp-action="DeleteItem">
+                        <input type="hidden" name="itemId" value="@item.Id"/>
+                        <button type="submit" class="btn btn-outline-primary mx-2">-</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+    @Html.ActionLink("Zamów", "FinalizeOrder", "Order", new { OrderId = Model.Id }, new { @class = "btn btn-primary" })
+}
+else
+{
+    <h5>Brak książek w koszyku</h5>
+}

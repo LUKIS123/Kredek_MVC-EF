@@ -43,7 +43,7 @@ namespace JakubWiesniakLab3.Controllers
                 return View(loginViewModel);
             }
 
-            var user = _accountService.GetUser(loginViewModel);
+            var user = _accountService.LoginUser(loginViewModel);
             if (user is null)
             {
                 ModelState.AddModelError("Login/Haslo", "Niepoprawne dane logowania");

@@ -9,6 +9,6 @@
         public DateTime Date { get; set; }
 
         public required string OrderStatus { get; set; }
-        public List<OrderItemViewModel>? OrderItems { get; set; }
+        public List<OrderItemViewModel> OrderItems { get; set; } = [];
     }
 }

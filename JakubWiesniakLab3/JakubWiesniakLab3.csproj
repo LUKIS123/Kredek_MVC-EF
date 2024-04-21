@@ -28,10 +28,20 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\EditProduct.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Order\CreateOrder.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Order\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Account\Register.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Order\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Order\CreateOrder.cshtml" />
   </ItemGroup>
 
 </Project>

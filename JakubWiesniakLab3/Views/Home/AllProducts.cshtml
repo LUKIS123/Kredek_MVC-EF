@@ -14,6 +14,7 @@
             <th>Cena</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +28,12 @@
                     <img src="~/images/@a.ImageUrl" style="height: 12rem; width: 9rem" class="rounded"/>
                 </td>
                 <td>@Html.ActionLink("Szczegóły", "ProductDetails", new { id = @a.Id }) </td>
+                <td>
+                    <form method="post" asp-controller="Order" asp-action="AddItem">
+                        <input type="hidden" name="itemId" value="@a.Id"/>
+                        <button type="submit" class="btn btn-outline-primary mx-2">Do Koszyka</button>
+                    </form>
+                </td>
             </tr>
         }
         </tbody>

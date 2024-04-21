@@ -14,6 +14,6 @@
         public int OrderStatusId { get; set; }
         public virtual OrderStatus? OrderStatus { get; set; }
 
-        public virtual List<OrderItem>? OrderItems { get; set; }
+        public virtual List<OrderItem> OrderItems { get; set; } = [];
     }
 }

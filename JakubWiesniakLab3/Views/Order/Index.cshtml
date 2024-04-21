@@ -1,0 +1,33 @@
+﻿@model IEnumerable<OrderViewModel>
+
+<h1>Historia Zamówień</h1>
+@Html.ActionLink("Powrót", "AllProducts", "Home", null, new { @class = "btn btn-secondary" })
+@if (Model.Any())
+{
+    <table>
+        <thead>
+        <th>Telefon</th>
+        <th>Miasto</th>
+        <th>Adres</th>
+        <th>Data</th>
+        <th>Ilość produktów w koszyku</th>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Phone</td>
+                <td>@item.City</td>
+                <td>@item.Address</td>
+                <td>@item.Date</td>
+                <td>@item.OrderItems.Count</td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+}
+else
+{
+    <h5>Brak historii zamówień</h5>
+}
