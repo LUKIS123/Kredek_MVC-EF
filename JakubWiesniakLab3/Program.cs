@@ -1,19 +1,26 @@
+using JakubWiesniakLab3;
+using JakubWiesniakLab3.DataAccess;
 using JakubWiesniakLab3.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using JakubWiesniakLab3.Repositories.Orders;
 using JakubWiesniakLab3.Repositories.Products;
 using JakubWiesniakLab3.Repositories.Users;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // app db context
-
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MS-SQL"));
+});
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<StoreDbSeeder>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -43,6 +50,9 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 // Seed the database
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<StoreDbSeeder>();
+seeder.Seed();
 
 
 app.Run();
